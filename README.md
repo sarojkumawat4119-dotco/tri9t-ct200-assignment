@@ -61,7 +61,7 @@ curl http://127.0.0.1:8000/generations/<generation_id>
 curl http://127.0.0.1:8000/nodes/<node_id>/changes
 ```
 
-Selections are version-pinned and store source snapshots, so generation reconstructs the exact selected text even after v2 is ingested. `/generations` and `/generations/{id}` expose staleness status at retrieval time. The examples use illustrative IDs; use IDs returned by your running API.
+Selections are version-pinned and store source snapshots, so generation reconstructs the exact selected text even after v2 is ingested. `/generations` and `/generations/{id}` expose staleness status at retrieval time; generation detail also includes per-test-case source status. The examples use illustrative IDs; use IDs returned by your running API.
 
 ## API summary
 

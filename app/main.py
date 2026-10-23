@@ -151,4 +151,10 @@ def list_generations(selection_id:int|None=None, node_id:int|None=None):
 def get_generation(generation_id:str):
     g=next((x for x in read_store() if x['generation_id']==generation_id),None)
     if not g: raise HTTPException(404,'Generation not found')
-    return {**g,'staleness':generation_status(g)}
+    status=generation_status(g)
+    by_node={x['node_id']:x for x in status['source_statuses']}
+    cases=[]
+    for case in g['test_cases']:
+        source_statuses=[by_node[nid] for nid in case.get('source_node_ids',[]) if nid in by_node]
+        cases.append({**case,'staleness':{'stale':any(x['changed'] for x in source_statuses),'sources':source_statuses}})
+    return {**g,'test_cases':cases,'staleness':status}
