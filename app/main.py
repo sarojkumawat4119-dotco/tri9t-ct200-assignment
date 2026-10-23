@@ -136,7 +136,7 @@ def generation_status(g):
             v=db.get(DocumentVersion,src['version_id'])
             latest=db.scalar(select(DocumentVersion).where(DocumentVersion.document_id==v.document_id).order_by(DocumentVersion.version_number.desc()).limit(1)) if v else None
             current=db.scalar(select(Node).where(Node.version_id==latest.id,Node.logical_id==src['logical_id'])) if latest else None
-            statuses.append({'logical_id':src['logical_id'],'source_version':src['version_number'],'latest_version':latest.version_number if latest else None,'changed':(current is None or current.content_hash!=src['content_hash']),'status':'removed_or_unmatched' if current is None else ('changed' if current.content_hash!=src['content_hash'] else 'unchanged'),'source_hash':src['content_hash'],'current_hash':current.content_hash if current else None})
+            statuses.append({'node_id':src['node_id'],'logical_id':src['logical_id'],'source_version':src['version_number'],'latest_version':latest.version_number if latest else None,'changed':(current is None or current.content_hash!=src['content_hash']),'status':'removed_or_unmatched' if current is None else ('changed' if current.content_hash!=src['content_hash'] else 'unchanged'),'source_hash':src['content_hash'],'current_hash':current.content_hash if current else None})
     changed=[x for x in statuses if x['changed']]
     return {'stale':bool(changed),'staleness':'stale' if changed else 'current','changed_sources':changed,'source_statuses':statuses,'limitation':'Hash-based change detection treats any normalized text change alike; it flags potential staleness, not clinical impact or automatic invalidity.'}
 @app.get('/generations')
