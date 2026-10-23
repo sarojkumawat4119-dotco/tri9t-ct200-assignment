@@ -1,0 +1,9 @@
+__pycache__/
+.pytest_cache/
+.venv/
+.env
+*.py[cod]
+ct200.db
+*.db-journal
+data/generated_cases.json
+data/generated_cases.tmp
